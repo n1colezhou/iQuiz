@@ -13,13 +13,9 @@ class ViewController: UIViewController {
         let tableView = UITableView()
         tableView.register(QuizTableViewCell.self, forCellReuseIdentifier: QuizTableViewCell.identifier)
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = .systemGroupedBackground
         return tableView
-    }()
-    
-    private let toolbar: UIToolbar = {
-        let toolbar = UIToolbar()
-        toolbar.translatesAutoresizingMaskIntoConstraints = false
-        return toolbar
     }()
     
     private let quizzes = QuizDataSource.shared.quizzes
@@ -28,21 +24,15 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         setupNavBar()
-        setupToolbar()
         setupTableView()
     }
     
     private func setupNavBar() {
         title = "iQuiz"
-    }
-    
-    private func setupToolbar() {
-        view.addSubview(toolbar)
         
-        // Create a flexible space to push the settings button to the right
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        navigationController?.navigationBar.prefersLargeTitles = true
         
-        // Create the settings button
+        // Create a settings button in the navigation bar
         let settingsButton = UIBarButtonItem(
             image: UIImage(systemName: "gear"),
             style: .plain,
@@ -50,22 +40,26 @@ class ViewController: UIViewController {
             action: #selector(settingsTapped)
         )
         
-        // Set the toolbar items
-        toolbar.items = [flexSpace, settingsButton]
+        navigationItem.rightBarButtonItem = settingsButton
         
-        // Position the toolbar at the top of the view
-        NSLayoutConstraint.activate([
-            toolbar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            toolbar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            toolbar.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
+        // Customize navigation bar appearance
+        if let navigationBar = navigationController?.navigationBar {
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = .systemBackground
+            appearance.titleTextAttributes = [.foregroundColor: UIColor.label]
+            appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.label]
+            
+            navigationBar.standardAppearance = appearance
+            navigationBar.scrollEdgeAppearance = appearance
+        }
     }
     
     private func setupTableView() {
         view.addSubview(tableView)
         
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: toolbar.bottomAnchor),
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
@@ -73,6 +67,9 @@ class ViewController: UIViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
+        
+        // Add some padding at the top of the table view
+        tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
     }
     
     @objc private func settingsTapped() {
@@ -105,7 +102,7 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
+        return 90
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
