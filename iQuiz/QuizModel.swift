@@ -30,19 +30,19 @@ class QuizDataSource {
             iconName: "function",
             questions: [
                 Question(
-                    text: "What is 2 + 2?",
+                    text: "Easy: What is 5 + 3?",
+                    options: ["6", "7", "8", "9"],
+                    correctAnswerIndex: 2
+                ),
+                Question(
+                    text: "Medium: What is 12 ÷ 4 × 2?",
+                    options: ["6", "8", "4", "3"],
+                    correctAnswerIndex: 0
+                ),
+                Question(
+                    text: "Hard: What is the value of x in the equation 2x + 3 = 11?",
                     options: ["3", "4", "5", "6"],
                     correctAnswerIndex: 1
-                ),
-                Question(
-                    text: "What is the square root of 16?",
-                    options: ["2", "4", "6", "8"],
-                    correctAnswerIndex: 1
-                ),
-                Question(
-                    text: "What is 3 × 5?",
-                    options: ["8", "12", "15", "18"],
-                    correctAnswerIndex: 2
                 )
             ]
         ),
@@ -52,19 +52,19 @@ class QuizDataSource {
             iconName: "bolt.fill",
             questions: [
                 Question(
-                    text: "What is Iron Man's real name?",
-                    options: ["Tony Stark", "Steve Rogers", "Bruce Banner", "Peter Parker"],
-                    correctAnswerIndex: 0
-                ),
-                Question(
-                    text: "Who is known as the God of Thunder?",
-                    options: ["Loki", "Odin", "Thor", "Heimdall"],
+                    text: "Easy: Which superhero wears a red and blue spider suit?",
+                    options: ["Iron Man", "Hulk", "Spider-man", "Captain America"],
                     correctAnswerIndex: 2
                 ),
                 Question(
-                    text: "What metal is Captain America's shield made of?",
-                    options: ["Steel", "Adamantium", "Titanium", "Vibranium"],
+                    text: "Medium: What is Black Panther's home country?",
+                    options: ["Zamunda", "Genosha", "Sokovia", "Wakanda"],
                     correctAnswerIndex: 3
+                ),
+                Question(
+                    text: "Hard: Which Infinity Stone did Vision have in his forehead?",
+                    options: ["Power", "Mind", "Reality", "Time"],
+                    correctAnswerIndex: 1
                 )
             ]
         ),
@@ -74,19 +74,19 @@ class QuizDataSource {
             iconName: "leaf.fill",
             questions: [
                 Question(
-                    text: "What is the chemical symbol for water?",
+                    text: "Easy: What is the chemical symbol for water?",
                     options: ["H2O", "CO2", "NaCl", "O2"],
                     correctAnswerIndex: 0
                 ),
                 Question(
-                    text: "What is the closest planet to the Sun?",
+                    text: "Medium: What is the closest planet to the Sun?",
                     options: ["Earth", "Venus", "Mercury", "Mars"],
                     correctAnswerIndex: 2
                 ),
                 Question(
-                    text: "Which of these is NOT a primary color?",
-                    options: ["Red", "Blue", "Green", "Yellow"],
-                    correctAnswerIndex: 3
+                    text: "Hard: What particle has a negative electric charge?",
+                    options: ["Proton", "Neutron", "Electron", "Photon"],
+                    correctAnswerIndex: 2
                 )
             ]
         )

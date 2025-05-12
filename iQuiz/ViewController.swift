@@ -29,10 +29,8 @@ class ViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Make sure navigation bar is visible when returning to this view
         navigationController?.setNavigationBarHidden(false, animated: animated)
         
-        // Deselect any selected row
         if let selectedIndexPath = tableView.indexPathForSelectedRow {
             tableView.deselectRow(at: selectedIndexPath, animated: true)
         }
@@ -43,7 +41,6 @@ class ViewController: UIViewController {
         
         navigationController?.navigationBar.prefersLargeTitles = true
         
-        // Create a settings button in the navigation bar
         let settingsButton = UIBarButtonItem(
             image: UIImage(systemName: "gear"),
             style: .plain,
@@ -53,7 +50,6 @@ class ViewController: UIViewController {
         
         navigationItem.rightBarButtonItem = settingsButton
         
-        // Customize navigation bar appearance
         if let navigationBar = navigationController?.navigationBar {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
@@ -79,7 +75,6 @@ class ViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         
-        // Add some padding at the top of the table view
         tableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
     }
     
@@ -117,10 +112,8 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // Get the selected quiz
         let selectedQuiz = quizzes[indexPath.row]
         
-        // Create and push the question view controller
         let questionVC = QuestionViewController(quiz: selectedQuiz)
         navigationController?.pushViewController(questionVC, animated: true)
     }

@@ -12,17 +12,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
-        // Set up the window with the window scene
         window = UIWindow(windowScene: windowScene)
         
-        // Create the view controller and embed it in a navigation controller
         let viewController = ViewController()
         let navigationController = UINavigationController(rootViewController: viewController)
         
-        // Set the navigation controller as the root view controller
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }

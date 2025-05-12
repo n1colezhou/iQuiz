@@ -127,16 +127,13 @@ class QuestionViewController: UIViewController {
         let question = quiz.questions[currentQuestionIndex]
         questionLabel.text = question.text
         
-        // Clear existing options
         optionsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         
-        // Add new options
         for (index, option) in question.options.enumerated() {
             let optionButton = createOptionButton(title: option, index: index)
             optionsStackView.addArrangedSubview(optionButton)
         }
         
-        // Update selected answer if user had previously selected one
         if let previousAnswer = userAnswers[currentQuestionIndex] {
             selectOption(at: previousAnswer)
         } else {
@@ -167,7 +164,6 @@ class QuestionViewController: UIViewController {
     private func selectOption(at index: Int) {
         selectedAnswerIndex = index
         
-        // Update UI for all option buttons
         for subview in optionsStackView.arrangedSubviews {
             guard let button = subview as? UIButton else { continue }
             
@@ -180,7 +176,6 @@ class QuestionViewController: UIViewController {
             }
         }
         
-        // Enable submit button
         submitButton.isEnabled = true
         submitButton.alpha = 1.0
     }
@@ -188,21 +183,19 @@ class QuestionViewController: UIViewController {
     @objc private func submitButtonTapped() {
         guard let selectedAnswerIndex = selectedAnswerIndex else { return }
         
-        // Save user's answer
         userAnswers[currentQuestionIndex] = selectedAnswerIndex
         
-        // Show the answer screen
         let currentQuestion = quiz.questions[currentQuestionIndex]
         let answerVC = AnswerViewController(
             question: currentQuestion,
-            userAnswerIndex: selectedAnswerIndex
+            userAnswerIndex: selectedAnswerIndex,
+            isLastQuestion: currentQuestionIndex == quiz.questions.count - 1
         )
         answerVC.delegate = self
         navigationController?.pushViewController(answerVC, animated: true)
     }
     
     private func showResults() {
-        // Calculate score
         var correctAnswers = 0
         for (index, answer) in userAnswers.enumerated() {
             if let answer = answer, answer == quiz.questions[index].correctAnswerIndex {
@@ -215,7 +208,17 @@ class QuestionViewController: UIViewController {
             totalQuestions: quiz.questions.count,
             quizTitle: quiz.title
         )
-        navigationController?.pushViewController(finishedVC, animated: true)
+        
+        if let navigationController = navigationController {
+            var viewControllers = navigationController.viewControllers
+            if let index = viewControllers.firstIndex(of: self) {
+                viewControllers = Array(viewControllers.prefix(index))
+                viewControllers.append(finishedVC)
+                navigationController.setViewControllers(viewControllers, animated: true)
+            } else {
+                navigationController.pushViewController(finishedVC, animated: true)
+            }
+        }
     }
 }
 

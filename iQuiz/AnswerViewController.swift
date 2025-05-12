@@ -16,6 +16,7 @@ class AnswerViewController: UIViewController {
     // MARK: - Properties
     private let question: Question
     private let userAnswerIndex: Int
+    private let isLastQuestion: Bool
     weak var delegate: AnswerViewControllerDelegate?
     
     // MARK: - UI Components
@@ -76,9 +77,10 @@ class AnswerViewController: UIViewController {
     }()
     
     // MARK: - Initialization
-    init(question: Question, userAnswerIndex: Int) {
+    init(question: Question, userAnswerIndex: Int, isLastQuestion: Bool = false) {
         self.question = question
         self.userAnswerIndex = userAnswerIndex
+        self.isLastQuestion = isLastQuestion
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -134,17 +136,18 @@ class AnswerViewController: UIViewController {
             nextButton.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
         ])
         
+        if isLastQuestion {
+            nextButton.setTitle("See Results", for: .normal)
+        }
+        
         nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
     }
     
     private func displayResult() {
-        // Set question text
         questionLabel.text = question.text
         
-        // Check if the answer is correct
         let isCorrect = userAnswerIndex == question.correctAnswerIndex
         
-        // Configure UI based on the result
         if isCorrect {
             resultIconImageView.image = UIImage(systemName: "checkmark.circle.fill")
             resultIconImageView.tintColor = .systemGreen
@@ -157,13 +160,15 @@ class AnswerViewController: UIViewController {
             resultLabel.textColor = .systemRed
         }
         
-        // Display correct answer
         let correctAnswer = question.options[question.correctAnswerIndex]
         correctAnswerLabel.text = "The correct answer is: \(correctAnswer)"
     }
     
     @objc private func nextButtonTapped() {
         delegate?.didTapNext()
-        navigationController?.popViewController(animated: false)
+        
+        if !isLastQuestion {
+            navigationController?.popViewController(animated: false)
+        }
     }
 }

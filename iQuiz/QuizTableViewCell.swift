@@ -79,30 +79,25 @@ class QuizTableViewCell: UITableViewCell {
         cardView.addSubview(chevronImageView)
         
         NSLayoutConstraint.activate([
-            // Card view constraints
             cardView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
             cardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             cardView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             cardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
             
-            // Icon constraints
             quizIconImageView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor, constant: 16),
             quizIconImageView.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
             quizIconImageView.widthAnchor.constraint(equalToConstant: 40),
             quizIconImageView.heightAnchor.constraint(equalToConstant: 40),
             
-            // Title constraints
             titleLabel.leadingAnchor.constraint(equalTo: quizIconImageView.trailingAnchor, constant: 16),
             titleLabel.topAnchor.constraint(equalTo: cardView.topAnchor, constant: 16),
             titleLabel.trailingAnchor.constraint(equalTo: chevronImageView.leadingAnchor, constant: -8),
             
-            // Description constraints
             descriptionLabel.leadingAnchor.constraint(equalTo: quizIconImageView.trailingAnchor, constant: 16),
             descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
             descriptionLabel.trailingAnchor.constraint(equalTo: chevronImageView.leadingAnchor, constant: -8),
             descriptionLabel.bottomAnchor.constraint(lessThanOrEqualTo: cardView.bottomAnchor, constant: -16),
             
-            // Chevron constraints
             chevronImageView.trailingAnchor.constraint(equalTo: cardView.trailingAnchor, constant: -16),
             chevronImageView.centerYAnchor.constraint(equalTo: cardView.centerYAnchor),
             chevronImageView.widthAnchor.constraint(equalToConstant: 14),

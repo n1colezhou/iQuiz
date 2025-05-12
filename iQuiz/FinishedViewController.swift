@@ -93,13 +93,11 @@ class FinishedViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Hide the navigation bar to give a more immersive finish screen
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        // Show the navigation bar again when leaving
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
@@ -147,13 +145,10 @@ class FinishedViewController: UIViewController {
     }
     
     private func displayResults() {
-        // Calculate percentage
         let percentage = Double(correctAnswers) / Double(totalQuestions) * 100
         
-        // Set score text
         scoreLabel.text = "\(correctAnswers) out of \(totalQuestions) correct"
         
-        // Set title and message based on score
         if percentage == 100 {
             titleLabel.text = "Perfect!"
             messageLabel.text = "Congratulations! You got all questions correct in the \(quizTitle) quiz."
@@ -176,7 +171,6 @@ class FinishedViewController: UIViewController {
     }
     
     @objc private func finishButtonTapped() {
-        // Navigate back to the root view controller (quiz list)
         navigationController?.popToRootViewController(animated: true)
     }
 }
