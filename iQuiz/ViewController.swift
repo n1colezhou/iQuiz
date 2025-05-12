@@ -27,6 +27,17 @@ class ViewController: UIViewController {
         setupTableView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Make sure navigation bar is visible when returning to this view
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+        
+        // Deselect any selected row
+        if let selectedIndexPath = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: selectedIndexPath, animated: true)
+        }
+    }
+    
     private func setupNavBar() {
         title = "iQuiz"
         
@@ -106,7 +117,11 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        // We'll handle quiz selection in Part 2
+        // Get the selected quiz
+        let selectedQuiz = quizzes[indexPath.row]
+        
+        // Create and push the question view controller
+        let questionVC = QuestionViewController(quiz: selectedQuiz)
+        navigationController?.pushViewController(questionVC, animated: true)
     }
 }
