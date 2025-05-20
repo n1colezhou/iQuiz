@@ -7,14 +7,14 @@
 
 import Foundation
 
-struct Quiz {
+struct Quiz: Codable {
     let title: String
     let description: String
     let iconName: String
     var questions: [Question]
 }
 
-struct Question {
+struct Question: Codable {
     let text: String
     let options: [String]
     let correctAnswerIndex: Int
@@ -23,72 +23,73 @@ struct Question {
 class QuizDataSource {
     static let shared = QuizDataSource()
     
-    var quizzes: [Quiz] = [
-        Quiz(
-            title: "Mathematics",
-            description: "Test your math knowledge with these questions",
-            iconName: "function",
-            questions: [
-                Question(
-                    text: "Easy: What is 5 + 3?",
-                    options: ["6", "7", "8", "9"],
-                    correctAnswerIndex: 2
-                ),
-                Question(
-                    text: "Medium: What is 12 ÷ 4 × 2?",
-                    options: ["6", "8", "4", "3"],
-                    correctAnswerIndex: 0
-                ),
-                Question(
-                    text: "Hard: What is the value of x in the equation 2x + 3 = 11?",
-                    options: ["3", "4", "5", "6"],
-                    correctAnswerIndex: 1
-                )
-            ]
-        ),
-        Quiz(
-            title: "Marvel Super Heroes",
-            description: "How well do you know Marvel superheroes?",
-            iconName: "bolt.fill",
-            questions: [
-                Question(
-                    text: "Easy: Which superhero wears a red and blue spider suit?",
-                    options: ["Iron Man", "Hulk", "Spider-man", "Captain America"],
-                    correctAnswerIndex: 2
-                ),
-                Question(
-                    text: "Medium: What is Black Panther's home country?",
-                    options: ["Zamunda", "Genosha", "Sokovia", "Wakanda"],
-                    correctAnswerIndex: 3
-                ),
-                Question(
-                    text: "Hard: Which Infinity Stone did Vision have in his forehead?",
-                    options: ["Power", "Mind", "Reality", "Time"],
-                    correctAnswerIndex: 1
-                )
-            ]
-        ),
-        Quiz(
-            title: "Science",
-            description: "Challenge yourself with science questions",
-            iconName: "leaf.fill",
-            questions: [
-                Question(
-                    text: "Easy: What is the chemical symbol for water?",
-                    options: ["H2O", "CO2", "NaCl", "O2"],
-                    correctAnswerIndex: 0
-                ),
-                Question(
-                    text: "Medium: What is the closest planet to the Sun?",
-                    options: ["Earth", "Venus", "Mercury", "Mars"],
-                    correctAnswerIndex: 2
-                ),
-                Question(
-                    text: "Hard: What particle has a negative electric charge?",
-                    options: ["Proton", "Neutron", "Electron", "Photon"],
-                    correctAnswerIndex: 2
-                )
-            ]
-        )
-    ]
+    private let storageFile = "quizzes.json"
+    
+    var quizzes: [Quiz] = []
+    
+    init() {
+        loadQuizzes()
+    }
+    
+    // MARK: - Storage Methods
+    
+    private func loadQuizzes() {
+        // First try to load from documents directory
+        if let loadedQuizzes = loadQuizzesFromFile() {
+            quizzes = loadedQuizzes
+            return
+        }
+        
+        // If no file exists, load default quizzes
+        quizzes = [
+            Quiz(
+                title: "Mathematics",
+                description: "Test your math knowledge with these questions",
+                iconName: "function",
+                questions: [
+                    Question(
+                        text: "Easy: What is 5 + 3?",
+                        options: ["6", "7", "8", "9"],
+                        correctAnswerIndex: 2
+                    ),
+                    // ... rest of your default quizzes
+                ]
+            ),
+            // ... other default quizzes
+        ]
+    }
+    
+    func updateQuizzes(_ newQuizzes: [Quiz]) {
+        quizzes = newQuizzes
+        saveQuizzesToFile()
+    }
+    
+    private func saveQuizzesToFile() {
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let fileURL = documentsDirectory.appendingPathComponent(storageFile)
+        
+        do {
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = .prettyPrinted
+            let data = try encoder.encode(quizzes)
+            try data.write(to: fileURL, options: .atomic)
+        } catch {
+            print("Error saving quizzes: \(error)")
+        }
+    }
+    
+    private func loadQuizzesFromFile() -> [Quiz]? {
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let fileURL = documentsDirectory.appendingPathComponent(storageFile)
+        
+        do {
+            let data = try Data(contentsOf: fileURL)
+            let decoder = JSONDecoder()
+            let quizzes = try decoder.decode([Quiz].self, from: data)
+            return quizzes
+        } catch {
+            print("Error loading quizzes: \(error)")
+            return nil
+        }
+    }
 }

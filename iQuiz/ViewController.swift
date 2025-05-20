@@ -99,7 +99,7 @@ class ViewController: UIViewController {
             fetchQuizData()
         }
     }
-    
+
     @objc private func refreshData() {
         if NetworkManager.shared.isNetworkAvailable {
             fetchQuizData()
@@ -108,7 +108,7 @@ class ViewController: UIViewController {
             showNetworkAlert()
         }
     }
-    
+
     private func fetchQuizData() {
         NetworkManager.shared.fetchQuizData(from: SettingsManager.shared.dataSourceURL) { [weak self] result in
             DispatchQueue.main.async {
@@ -120,7 +120,7 @@ class ViewController: UIViewController {
                     let quizzes = quizData.map { $0.toQuiz() }
                     
                     // Update the QuizDataSource
-                    QuizDataSource.shared.quizzes = quizzes
+                    QuizDataSource.shared.updateQuizzes(quizzes)
                     
                     // Reload table view
                     self?.tableView.reloadData()
@@ -137,6 +137,10 @@ class ViewController: UIViewController {
     }
     
     @objc private func settingsTapped() {
+        if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
+            UIApplication.shared.open(settingsUrl)
+        }
+        
         let settingsVC = SettingsViewController()
         settingsVC.delegate = self
         navigationController?.pushViewController(settingsVC, animated: true)
